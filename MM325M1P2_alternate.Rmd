@@ -1,0 +1,49 @@
+---
+title: "MM325M1P2"
+author: "Caleb Roper"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Get Data
+
+Here I will load the data from https://www.worldvaluessurvey.org/WVSEVSjoint2017.jsp.
+```{r getdata}
+# Loading data into R
+wvs2 <- readRDS("C:/Users/caleb/Documents/F00007762-WV6_Data_R_v20180912.rds")
+
+# Take a look at a summary
+# summary(wvs2)
+# View(wvs2)
+
+# Inquire about Q260 data type
+View(wvs2$V242)
+
+# Examine data using histogram
+#hist(wvs2$V242, main = paste("Age of Adults"), xlab = paste("Age"), ylab = paste("Frequency of Age Range"))
+```
+
+## Visualizations
+
+Here I take a look at the data using some charts.
+```{r visuals}
+# Visualize using pie chart
+Prop <-c(sum(wvs2$V9 ==1),sum(wvs2$V9 == 2), sum(wvs2$V9 ==3), sum(wvs2$V9 ==4))
+pie(Prop, labels = c("Not Important at All","Not Very Important","Somewhat Important","Very Important"))
+
+Prop <-c(sum(wvs2$V58 ==1),sum(wvs2$V58 == 2), sum(wvs2$V58 ==3), sum(wvs2$V58==4))
+pie(Prop, labels = c("Strongly Disagree","Disagree","Agree","Strongly Agree"))
+
+# Examine using Frequency Table
+as.data.frame(table(wvs2$V52),row.names = c("Inappropriate","No Answer","Don't Know","Strongly Disagree","Disagree","Agree","Strongly Agree"))
+
+# Visualize using bar plot
+library(ggpubr)
+df<-as.data.frame(table(wvs2$V58))
+
+ggbarplot(df, x = "Var1", y = "Freq", xlab="Number of Children (“8” = 8 or more)", ylab="Frequency")
+```
